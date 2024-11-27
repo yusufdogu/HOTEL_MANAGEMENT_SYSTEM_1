@@ -1,58 +1,70 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Hotel {
-    Scanner girdiler = new Scanner(System.in);
+    // Oteldeki odaların listesi
+    private ArrayList<Oda> odalar = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
 
-    ArrayList<Oda> odalar= new ArrayList<>();
-    ArrayList<Personel> personeller= new ArrayList<>();
-    ArrayList<YerAyirma> yerAyirmalar= new ArrayList<>();
+    // Yeni bir oda eklemek için metod
+    public void odaEkleme() {
+        System.out.print("Oda numarasını girin: ");
+        int odaNumarasi = scanner.nextInt();
 
-    public void odaEkleme(Oda oda){
-        //buraya oda sınıfı oluşturulduktan sonra scanner ile oda sınıfına girilecek bilgiler alınıp veri tabanına eklenmeli
+        System.out.print("Oda kapasitesini girin: ");
+        int kapasite = scanner.nextInt();
 
-    }
-    public void odaCikarma(Oda oda){
-        //odaidyi kullanıp veritabanından bu odayı bulup silme işlemini yapacağız
+        System.out.print("Oda fiyatını girin: ");
+        double fiyat = scanner.nextDouble();
 
-    }
-    public void personelEkleme(Personel personel){
-        System.out.println("Personel bilgilerinizi giriniz");// Gui ile buton olayları yapılmalı
-        personel.setIsimSoyisim(girdiler.nextLine());
-        personel.setPersonelKimlik(girdiler.nextLine());
-        personel.setGorevAlani(girdiler.nextLine());
-        personel.setSalary(girdiler.nextDouble());
-        System.out.println("personel bilgileri ... (burada genel olarak personel bilgileri gösterilecek) ve onaylamayla ilgili bir şeyler eklenebilir ");
-        //ayrıca bu bilgilerin hepsini bir veri tabanına yüklememiz gerekiyor
-    }
-    public void personelCikarma(Personel personel){
-        System.out.println("silinecek personelin id bilgisini giriniz");//silinecek personelin id bilgisi alınması yeterli
-        //buraya veritabanına bu id'yi arayıp bulacak bir kod koymalıyız
+        scanner.nextLine(); // Consume the newline
 
-    }
+        System.out.print("Odanın durumunu girin (Boş/Dolu): ");
+        String odaDurumu = scanner.nextLine();
 
-    public void yoneticiEkleme(Yonetici yonetici){
-        System.out.println("Yönetici bilgilerini giriniz");
-        yonetici.setIsimSoyisim(girdiler.nextLine());
-        yonetici.setYoneticiOzelKimlik(girdiler.nextLine());
-        yonetici.setGorevAlani(girdiler.nextLine());
-        yonetici.setSalary(girdiler.nextDouble());
-        //burada veritabanına yükleme işlemi yapılır
-    }
-    public void yoneticiCikarma(Yonetici yonetici){
-        //yonetici id uzerinden veritabanından veri çekilerek halledilir
+        System.out.print("Odanın manzarasını girin (Deniz/Orman): ");
+        String manzara = scanner.nextLine();
+
+        // Oda nesnesini oluşturup ekliyoruz
+        Oda yeniOda = new Oda(odaNumarasi, kapasite, fiyat, odaDurumu, manzara);
+        odalar.add(yeniOda);
+
+        System.out.println("Oda başarıyla eklendi: \n" + yeniOda.odaBilgileri());
     }
 
-    public ArrayList<Oda> odaUygunMu(Tarih baslangicTarihi,Tarih ayrilmaTarihi){
-        // örneğin mainden bu fonksiyona bir tarih aralığı verip ve veritabanından bu tarih aralıklarını bulup uygunluk durumu uygun olanları liste olarak döndürür
-        return null;
-    }
-    public void otomatikOdaUygunlukDuzenleme(){
-        //bu fonksiyon her gün belirli bir saatte yenilenecek ve veritabanında bugün boş hale gelmesi olan odaların uygunluk durumları düzenlenecek
-    }
-    public void uygunOdalariSemalastir(Tarih baslangicTarihi, Tarih ayrilmaTarihi){
-        //10 katlı ve her katında 10 odası bulunan  (5 oda ormana , 5 oda denize bakacak şekilde) burada 2 boyutlu bir görsel üzerinden hangi odaların boş olduğunu göstereceğiz
+    // Bir odayı numarası ile silmek için metod
+    public void odaCikarma(int odaNumarasi) {
+        for (Oda oda : odalar) {
+            if (oda.getOdaNumarasi() == odaNumarasi) {
+                odalar.remove(oda); // Odayı listeden kaldır
+                System.out.println("Oda başarıyla silindi: \n" + oda.odaBilgileri());
+                return; // Döngüyü sonlandır
+            }
+        }
+        System.out.println("Oda bulunamadı!"); // Oda bulunamazsa mesaj yazdır
     }
 
+    // Oda durumunu (Boş/Dolu) güncelleyen metod
+    public void odaDurumuGuncelle(int odaNumarasi, String yeniDurum) {
+        for (Oda oda : odalar) {
+            if (oda.getOdaNumarasi() == odaNumarasi) {
+                oda.odaDurumuGuncelle(yeniDurum); // Odanın durumunu güncelle
+                System.out.println("Oda durumu başarıyla güncellendi: \n" + oda.odaBilgileri());
+                return;
+            }
+        }
+        System.out.println("Oda bulunamadı!"); // Oda bulunamazsa mesaj yazdır
+    }
+
+    // Tüm odaları listeleyen metod
+    public void tumOdalarıListele() {
+        if (odalar.isEmpty()) {
+            System.out.println("Şu anda otelde kayıtlı oda yok.");
+        } else {
+            System.out.println("--- Oteldeki Odalar ---");
+            for (Oda oda : odalar) {
+                System.out.println(oda.odaBilgileri()); // Her bir odanın bilgilerini yazdır
+            }
+        }
+    }
 }
