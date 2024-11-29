@@ -1,53 +1,52 @@
-import java.util.Scanner;
+import java.util.ArrayList;
 
-public class Oda {
-    private int odaNumarasi;     // Odanın numarası
-    private int kapasite;        // Odanın kapasitesi (Kaç kişi alabilir)
-    private double fiyat;        // Odanın fiyatı
-    private String odaDurumu;    // Odanın durumu ("Boş" ya da "Dolu")
-    private String manzara;      // Odanın manzarası ("Deniz" veya "Orman")
+public class Room {
+    private int roomNumber; // Oda numarası
+    private int capacity; // Oda kapasitesi
+    private double price; // Oda fiyatı
+    private String status; // Oda durumu (Boş/Dolu)
 
     // Constructor (Yapıcı metod)
-    public Oda(int odaNumarasi, int kapasite, double fiyat, String odaDurumu, String manzara) {
-        this.odaNumarasi = odaNumarasi;
-        this.kapasite = kapasite;
-        this.fiyat = fiyat;
-        this.odaDurumu = odaDurumu;
-        this.manzara = manzara;
+    public Room(int roomNumber, int capacity, double price, String status) {
+        this.roomNumber = roomNumber;
+        this.capacity = capacity;
+        this.price = price;
+        this.status = status;
     }
 
-    // Oda numarasını döndüren getter
-    public int getOdaNumarasi() {
-        return odaNumarasi;
+    // Oda numarasını döndüren metod
+    public int getRoomNumber() {
+        return roomNumber;
     }
 
-    // Oda kapasitesini döndüren getter
-    public int getKapasite() {
-        return kapasite;
+    // Oda kapasitesini döndüren metod
+    public int getCapacity() {
+        return capacity;
     }
 
-    // Oda fiyatını döndüren getter
-    public double getFiyat() {
-        return fiyat;
+    // Oda fiyatını döndüren metod
+    public double getPrice() {
+        return price;
     }
 
-    // Oda durumunu döndüren getter
-    public String getOdaDurumu() {
-        return odaDurumu;
-    }
-
-    // Odanın manzarasını döndüren getter
-    public String getManzara() {
-        return manzara;
-    }
-
-    // Oda durumunu güncelleyen setter
-    public void odaDurumuGuncelle(String yeniDurum) {
-        this.odaDurumu = yeniDurum;
+    // Oda durumunu döndüren metod
+    public String getStatus() {
+        return status;
     }
 
     // Oda bilgilerini döndüren metod
-    public String odaBilgileri() {
-        return "Oda Numarası: " + odaNumarasi + ", Kapasite: " + kapasite + ", Fiyat: " + fiyat + " TL, Durum: " + odaDurumu + ", Manzara: " + manzara;
+    public String roomDetails() {
+        return "Oda Numarası: " + roomNumber + ", Kapasite: " + capacity + ", Fiyat: " + price + " TL, Durum: " + status;
+    }
+
+    // Oda arama (Oda numarasına göre)
+    public static void searchRoomByNumber(int roomNumber, ArrayList<Room> rooms) {
+        for (Room room : rooms) {
+            if (room.getRoomNumber() == roomNumber) {
+                System.out.println("Oda Bulundu: " + room.roomDetails());
+                return;
+            }
+        }
+        System.out.println("Oda numarası ile eşleşen oda bulunamadı.");
     }
 }
